@@ -2,12 +2,28 @@ const loadFeatures = async () => {
         const url = ` https://openapi.programming-hero.com/api/ai/tools`
         const res = await fetch(url);
         const data = await res.json();
-        displayFeatures(data);
+        displayFeatures(data.data.tools);
     }
 
     const displayFeatures = (features) => {
         console.log(features)
-    }
+        const featuresContainer = document.getElementById('features-container');
+        features.forEach(feature => {
+                    const featureDiv = document.createElement('div');
+                    featureDiv.classList.add('col');
+                    featureDiv.innerHTML = `
+                    <div class="card p-4">
+                            <img src="${feature.image}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">${feature.name}</h5>
+                              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                              
+                            </div>
+                        </div>
+                    `
+                    featuresContainer.appendChild(featureDiv);
+                })
+            }    
 
     loadFeatures()
 
@@ -32,50 +48,41 @@ const loadFeatures = async () => {
 
 
 
-// const featuresContainer = document.getElementById('features-container');
-            // phonesContainer.innerText='';
-        //     const showAll = document.getElementById('show-all');
-        //     if (dataLimit && phones.length > 10) {
-        //         phones = phones.slice(0, 10);
-        //         showAll.classList.remove('d-none');
-        //     }
-        //     else{
-        //         showAll.classList.add('d-none');
-        //     }
 
 
-// const loadPhones = async (searchText, dataLimit) => {
-//     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
+
+// const loadfeatures = async (searchText, dataLimit) => {
+//     const url = `https://openapi.programming-hero.com/api/features?search=${searchText}`
 //     const res = await fetch(url);
 //     const data = await res.json();
-//     displayPhones(data.data, dataLimit);
+//     displayfeatures(data.data, dataLimit);
 // }
-// const displayPhones = (phones, dataLimit) => {
-//     const phonesContainer = document.getElementById('phones-container');
-//     phonesContainer.innerText='';
+// const displayfeatures = (features, dataLimit) => {
+//     const featuresContainer = document.getElementById('features-container');
+//     featuresContainer.innerText='';
 //     const showAll = document.getElementById('show-all');
-//     if (dataLimit && phones.length > 10) {
-//         phones = phones.slice(0, 10);
+//     if (dataLimit && features.length > 10) {
+//         features = features.slice(0, 10);
 //         showAll.classList.remove('d-none');
 //     }
 //     else{
 //         showAll.classList.add('d-none');
 //     }
 //     
-//     phones.forEach(phone => {
-//         const phoneDiv = document.createElement('div');
-//         phoneDiv.classList.add('col');
-//         phoneDiv.innerHTML = `
+//     features.forEach(feature => {
+//         const featureDiv = document.createElement('div');
+//         featureDiv.classList.add('col');
+//         featureDiv.innerHTML = `
 //         <div class="card p-4">
-//                 <img src="${phone.image}" class="card-img-top" alt="...">
+//                 <img src="${feature.image}" class="card-img-top" alt="...">
 //                 <div class="card-body">
-//                   <h5 class="card-title">${phone.phone_name}</h5>
+//                   <h5 class="card-title">${feature.feature_name}</h5>
 //                   <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-//                   <button onclick="loadPhoneDetails('${phone.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Show Details</button>
+//                   <button onclick="loadfeatureDetails('${feature.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#featureDetailModal">Show Details</button>
 //                 </div>
 //             </div>
 //         `
-//         phonesContainer.appendChild(phoneDiv);
+//         featuresContainer.appendChild(featureDiv);
 //     })
 //     toggleSpinner(false)
 // }
@@ -84,7 +91,7 @@ const loadFeatures = async () => {
 //     toggleSpinner(true);
 //     const searchField= document.getElementById('search-field');
 //     const searchText =searchField.value;
-//     loadPhones(searchText, dataLimit);
+//     loadfeatures(searchText, dataLimit);
 // }
 // document.getElementById('btn-search').addEventListener('click',function(){
 //     searchProcess(10)
@@ -108,23 +115,23 @@ const loadFeatures = async () => {
 //     searchProcess();
 // })
 
-// const loadPhoneDetails = async id =>{
-//     const url =`https://openapi.programming-hero.com/api/phone/${id}`;
+// const loadfeatureDetails = async id =>{
+//     const url =`https://openapi.programming-hero.com/api/feature/${id}`;
 //     const res = await fetch(url);
 //     const data = await res.json();
-//     displayPhoneDetails(data.data)
+//     displayfeatureDetails(data.data)
 // }
 
-// const displayPhoneDetails = phone =>{
-//     console.log(phone);
-//     const modalTitle = document.getElementById('phoneDetailModalLabel');
-//     modalTitle.innerText = phone.name;
-//     const phoneDetails = document.getElementById('phone-details');
-//     phoneDetails.innerHTML=`
-//     <p>Release Date: ${phone.releaseDate ? phone.releaseDate : 'No Release Date Found'}</p>
-//     <p>Storage: ${phone.mainFeatures.storage ? phone.mainFeatures.storage :'No Storage Information'}</p>
-//     <p>Others: ${phone.others? phone.others.Bluetooth : 'No Bluetooth Information'}</p>
+// const displayfeatureDetails = feature =>{
+//     console.log(feature);
+//     const modalTitle = document.getElementById('featureDetailModalLabel');
+//     modalTitle.innerText = feature.name;
+//     const featureDetails = document.getElementById('feature-details');
+//     featureDetails.innerHTML=`
+//     <p>Release Date: ${feature.releaseDate ? feature.releaseDate : 'No Release Date Found'}</p>
+//     <p>Storage: ${feature.mainFeatures.storage ? feature.mainFeatures.storage :'No Storage Information'}</p>
+//     <p>Others: ${feature.others? feature.others.Bluetooth : 'No Bluetooth Information'}</p>
 //     `
 // }
 
-// loadPhones('apple')
+// loadfeatures('apple')
