@@ -2,8 +2,13 @@ const loadFeatures = async () => {
         const url = ` https://openapi.programming-hero.com/api/ai/tools`
         const res = await fetch(url);
         const data = await res.json();
-        console.log(data);
+        displayFeatures(data);
     }
+
+    const displayFeatures = (features) => {
+        console.log(features)
+    }
+
     loadFeatures()
 
 
@@ -27,7 +32,16 @@ const loadFeatures = async () => {
 
 
 
-
+// const featuresContainer = document.getElementById('features-container');
+            // phonesContainer.innerText='';
+        //     const showAll = document.getElementById('show-all');
+        //     if (dataLimit && phones.length > 10) {
+        //         phones = phones.slice(0, 10);
+        //         showAll.classList.remove('d-none');
+        //     }
+        //     else{
+        //         showAll.classList.add('d-none');
+        //     }
 
 
 // const loadPhones = async (searchText, dataLimit) => {
@@ -47,13 +61,7 @@ const loadFeatures = async () => {
 //     else{
 //         showAll.classList.add('d-none');
 //     }
-//     const noPhone = document.getElementById('not-found-msg');
-//     if(phones.length===0){
-//         noPhone.classList.remove('d-none')
-//     }
-//     else{
-//         noPhone.classList.add('d-none')
-//     }
+//     
 //     phones.forEach(phone => {
 //         const phoneDiv = document.createElement('div');
 //         phoneDiv.classList.add('col');
