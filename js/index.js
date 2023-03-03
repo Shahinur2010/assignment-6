@@ -41,14 +41,29 @@ const displayItems = (items, dataLimit) => {
                     `
         itemsContainer.appendChild(itemDiv);
     })
+    toggleSpinner(false)
 }
 
 const searchProcess = (dataLimit) => {
+    toggleSpinner(true);
     loadItems(dataLimit);
 }
+
+const toggleSpinner = isLoading => {
+    const loaderSection = document.getElementById('loader');
+    if(isLoading){
+        loaderSection.classList.remove('d-none')
+    }
+    else{
+        loaderSection.classList.add('d-none')
+    }
+}
+
 document.getElementById('btn-see-more').addEventListener('click', function () {
     searchProcess();
 })
+
+
 
 loadItems(6)
 
