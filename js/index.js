@@ -15,9 +15,18 @@ const loadFeatures = async () => {
                     <div class="card p-4">
                             <img src="${feature.image}" class="card-img-top" alt="...">
                             <div class="card-body">
+                            <h5 class="card-title">Features</h5>
+                            <ol>
+                            <li>${feature.features[0]}</li>
+                            <li>${feature.features[1]}</li>
+                            <li>${feature.features[2]}</li>
+                            </ol>
+                            <hr>
                               <h5 class="card-title">${feature.name}</h5>
-                              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                              
+                              <div class="d-flex justify-content-around mt-4">
+                              <div class="me-auto"><i class="fa-solid fa-calendar-days"></i>   ${feature.published_in}</div>
+                              <div><i class="text-danger fa-solid fa-arrow-right"></i></div>
+                              </div>
                             </div>
                         </div>
                     `
