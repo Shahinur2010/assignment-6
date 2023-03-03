@@ -1,49 +1,56 @@
-const loadFeatures = async () => {
-        const url = ` https://openapi.programming-hero.com/api/ai/tools`
-        const res = await fetch(url);
-        const data = await res.json();
-        displayFeatures(data.data.tools);
-    }
+const loadItems = async (dataLimit) => {
+    const url = ` https://openapi.programming-hero.com/api/ai/tools`
+    const res = await fetch(url);
+    const data = await res.json();
+    displayItems(data.data.tools, dataLimit);
+}
 
-    const displayFeatures = (features) => {
-        console.log(features)
-        const featuresContainer = document.getElementById('features-container');
-        features.forEach(feature => {
-                    const featureDiv = document.createElement('div');
-                    featureDiv.classList.add('col');
-                    featureDiv.innerHTML = `
+const displayItems = (items, dataLimit) => {
+    console.log(items)
+    const itemsContainer = document.getElementById('items-container');
+    itemsContainer.innerText='';
+    const seeMore = document.getElementById('see-more');
+    if (dataLimit && items.length > 6) {
+        items = items.slice(0, 6);
+        seeMore.classList.remove('d-none');
+    }
+    else {
+        seeMore.classList.add('d-none');
+    }
+    items.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('col');
+        itemDiv.innerHTML = `
                     <div class="card p-4">
-                            <img src="${feature.image}" class="card-img-top" alt="...">
+                            <img src="${item.image}" class="card-img-top" alt="...">
                             <div class="card-body">
                             <h5 class="card-title">Features</h5>
                             <ol>
-                            <li>${feature.features[0]}</li>
-                            <li>${feature.features[1]}</li>
-                            <li>${feature.features[2]}</li>
+                            <li>${item.features[0]}</li>
+                            <li>${item.features[1]}</li>
+                            <li>${item.features[2]? item.features[2]:'No data found'}</li>
                             </ol>
                             <hr>
-                              <h5 class="card-title">${feature.name}</h5>
+                              <h5 class="card-title">${item.name}</h5>
                               <div class="d-flex justify-content-around mt-4">
-                              <div class="me-auto"><i class="fa-solid fa-calendar-days"></i>   ${feature.published_in}</div>
+                              <div class="me-auto"><i class="fa-solid fa-calendar-days"></i>   ${item.published_in}</div>
                               <div><i class="text-danger fa-solid fa-arrow-right"></i></div>
                               </div>
                             </div>
                         </div>
                     `
-                    featuresContainer.appendChild(featureDiv);
-                })
-            }    
+        itemsContainer.appendChild(itemDiv);
+    })
+}
 
-    loadFeatures()
+const searchProcess = (dataLimit) => {
+    loadItems(dataLimit);
+}
+document.getElementById('btn-see-more').addEventListener('click', function () {
+    searchProcess();
+})
 
-
-
-
-
-
-
-
-
+loadItems(6)
 
 
 
@@ -60,38 +67,47 @@ const loadFeatures = async () => {
 
 
 
-// const loadfeatures = async (searchText, dataLimit) => {
-//     const url = `https://openapi.programming-hero.com/api/features?search=${searchText}`
+
+
+
+
+
+
+
+
+
+// const loaditems = async (searchText, dataLimit) => {
+//     const url = `https://openapi.programming-hero.com/api/items?search=${searchText}`
 //     const res = await fetch(url);
 //     const data = await res.json();
-//     displayfeatures(data.data, dataLimit);
+//     displayitems(data.data, dataLimit);
 // }
-// const displayfeatures = (features, dataLimit) => {
-//     const featuresContainer = document.getElementById('features-container');
-//     featuresContainer.innerText='';
-//     const showAll = document.getElementById('show-all');
-//     if (dataLimit && features.length > 10) {
-//         features = features.slice(0, 10);
-//         showAll.classList.remove('d-none');
+// const displayitems = (items, dataLimit) => {
+//     const itemsContainer = document.getElementById('items-container');
+//     itemsContainer.innerText='';
+//     const seeMore = document.getElementById('show-all');
+//     if (dataLimit && items.length > 10) {
+//         items = items.slice(0, 10);
+//         seeMore.classList.remove('d-none');
 //     }
 //     else{
-//         showAll.classList.add('d-none');
+//         seeMore.classList.add('d-none');
 //     }
-//     
-//     features.forEach(feature => {
-//         const featureDiv = document.createElement('div');
-//         featureDiv.classList.add('col');
-//         featureDiv.innerHTML = `
+//
+//     items.forEach(item => {
+//         const itemDiv = document.createElement('div');
+//         itemDiv.classList.add('col');
+//         itemDiv.innerHTML = `
 //         <div class="card p-4">
-//                 <img src="${feature.image}" class="card-img-top" alt="...">
+//                 <img src="${item.image}" class="card-img-top" alt="...">
 //                 <div class="card-body">
-//                   <h5 class="card-title">${feature.feature_name}</h5>
+//                   <h5 class="card-title">${item.item_name}</h5>
 //                   <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-//                   <button onclick="loadfeatureDetails('${feature.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#featureDetailModal">Show Details</button>
+//                   <button onclick="loaditemDetails('${item.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemDetailModal">Show Details</button>
 //                 </div>
 //             </div>
 //         `
-//         featuresContainer.appendChild(featureDiv);
+//         itemsContainer.appendChild(itemDiv);
 //     })
 //     toggleSpinner(false)
 // }
@@ -100,23 +116,16 @@ const loadFeatures = async () => {
 //     toggleSpinner(true);
 //     const searchField= document.getElementById('search-field');
 //     const searchText =searchField.value;
-//     loadfeatures(searchText, dataLimit);
+//     loaditems(searchText, dataLimit);
 // }
-// document.getElementById('btn-search').addEventListener('click',function(){
-//     searchProcess(10)
-// })
-// document.getElementById('search-field').addEventListener('keypress',function(e){
-//     if(e.key === 'Enter'){
-//         searchProcess(10)   
-//     }
-// })
+
 // const toggleSpinner = isLoading => {
 //     const loaderSection = document.getElementById('loader');
 //     if(isLoading){
 //         loaderSection.classList.remove('d-none')
 //     }
 //     else{
-//         loaderSection.classList.add('d-none') 
+//         loaderSection.classList.add('d-none')
 //     }
 // }
 
@@ -124,23 +133,34 @@ const loadFeatures = async () => {
 //     searchProcess();
 // })
 
-// const loadfeatureDetails = async id =>{
-//     const url =`https://openapi.programming-hero.com/api/feature/${id}`;
+// const loaditemDetails = async id =>{
+//     const url =`https://openapi.programming-hero.com/api/item/${id}`;
 //     const res = await fetch(url);
 //     const data = await res.json();
-//     displayfeatureDetails(data.data)
+//     displayitemDetails(data.data)
 // }
 
-// const displayfeatureDetails = feature =>{
-//     console.log(feature);
-//     const modalTitle = document.getElementById('featureDetailModalLabel');
-//     modalTitle.innerText = feature.name;
-//     const featureDetails = document.getElementById('feature-details');
-//     featureDetails.innerHTML=`
-//     <p>Release Date: ${feature.releaseDate ? feature.releaseDate : 'No Release Date Found'}</p>
-//     <p>Storage: ${feature.mainFeatures.storage ? feature.mainFeatures.storage :'No Storage Information'}</p>
-//     <p>Others: ${feature.others? feature.others.Bluetooth : 'No Bluetooth Information'}</p>
+// const displayitemDetails = item =>{
+//     console.log(item);
+//     const modalTitle = document.getElementById('itemDetailModalLabel');
+//     modalTitle.innerText = item.name;
+//     const itemDetails = document.getElementById('item-details');
+//     itemDetails.innerHTML=`
+//     <p>Release Date: ${item.releaseDate ? item.releaseDate : 'No Release Date Found'}</p>
+//     <p>Storage: ${item.mainitems.storage ? item.mainitems.storage :'No Storage Information'}</p>
+//     <p>Others: ${item.others? item.others.Bluetooth : 'No Bluetooth Information'}</p>
 //     `
 // }
 
-// loadfeatures('apple')
+// loaditems('apple')
+
+
+
+
+// const generateLi= (li) => {
+//     let liHTML = ``;
+//     for(let i = 0; i<features.length; i++){
+//         liHTML += `item.'${features[i]}'`;
+//         return liHTML
+//     }
+// }
