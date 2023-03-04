@@ -6,7 +6,6 @@ const loadItems = async (dataLimit) => {
 }
 
 const displayItems = (items, dataLimit) => {
-    console.log(items)
     const itemsContainer = document.getElementById('items-container');
     itemsContainer.innerText='';
     const seeMore = document.getElementById('see-more');
@@ -63,32 +62,86 @@ document.getElementById('btn-see-more').addEventListener('click', function () {
     searchProcess();
 })
 
-const loadItemDetails = (id) =>{
-        const url =` https://openapi.programming-hero.com/api/ai/tool/01`;
-        console.log(url)
-        // fetch(url);
-        // .then(res=> res.json());
-        // .then(data=>console.log(data))
-    }
-    // const loadMeals = (searchText) => {
-        //     const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`
-        //     console.log(url)
-        //     fetch(url)
-        //       .then(res => res.json())
-        //       .then(data => displayMeals(data.meals))
-        //   }
+    const loadItemDetails = async id =>{
+            const url =`https://openapi.programming-hero.com/api/ai/tool/01`;
+            const res = await fetch(url);
+            const data = await res.json();
+            displayItemDetails(data.data)
+        }
     loadItemDetails()
-    // const displayItemDetails = item =>{
-    //     console.log(item);
-    //     const modalTitle = document.getElementById('itemDetailModalLabel');
-    //     modalTitle.innerText = item.name;
-    //     const itemDetails = document.getElementById('item-details');
-    //     itemDetails.innerHTML=`
-    //     <p>Release Date: ${item.releaseDate ? item.releaseDate : 'No Release Date Found'}</p>
-    //     <p>Storage: ${item.mainitems.storage ? item.mainitems.storage :'No Storage Information'}</p>
-    //     <p>Others: ${item.others? item.others.Bluetooth : 'No Bluetooth Information'}</p>
-    //     `
-    // }
+
+    const displayItemDetails = item =>{
+        const modalTitle = document.getElementById('itemDetailModalLabel');
+        modalTitle.innerText = '';
+        const itemDetails = document.getElementById('item-details');
+        itemDetails.innerHTML=`
+        <div class="row">
+        <div class="col">
+                <div class="card">
+                <div class="card-body">
+                <p class="card-text fw-bold">${item.description}</p>
+        <div class="d-flex justify-content-around my-4"> 
+        <div class="d-flex flex-column text-success">
+        <div class="text-center">${item.pricing[0].plan? item.pricing[0].plan : 'No Pricing Plan Found'}</div>
+        <div>${item.pricing[0].price? item.pricing[0].price : 'No Pricing Data Found'}
+        </div>
+        </div>
+        <div class="d-flex flex-column text-warning">
+        <div class="text-center">${item.pricing[1].plan? item.pricing[1].plan : 'No Pricing Plan Found'}</div>
+        <div>${item.pricing[1].price? item.pricing[1].price : 'No Pricing Data Found'}</div>
+        </div>
+        <div class="d-flex flex-column text-danger">
+        <div class="text-center">${item.pricing[2].plan? item.pricing[2].plan : 'No Pricing Plan Found'}</div>
+        <div>${item.pricing[2].price? item.pricing[2].price : 'No Pricing Data Found'}</div>
+        </div>
+        </div>
+        <div class="d-flex justify-content-around">
+        <div> <span class="fw-bold"> Features</span> 
+        <li>${item.features.feature_name
+            ? item.features.feature_name
+            : 'No Features Information Found'}</li>
+        <li>${item.features.feature_name
+            ? item.features.feature_name
+            : 'No Features Information Found'}</li>
+        <li>${item.features.feature_name
+            ? item.features.feature_name
+            : 'No Features Information Found'}</li>
+        
+        </div>
+            <div> <span class="fw-bold"> Integrations</span>
+            : <li>
+            ${item.integrations[0]
+                ? item.integrations[0]
+                : 'No Integration Information Found'}
+            </li>
+            <li>
+            ${item.integrations[1]
+                ? item.integrations[1]
+                : 'No Integration Information Found'}
+            </li>
+            <li>
+            ${item.integrations[2]
+                ? item.integrations[2]
+                : 'No Integration Information Found'}
+            </li>
+            </div>
+                </div>
+                </div>
+          </div>
+                <div class="col">
+                <div class="card">
+                <p class="text-white bg-danger ms-auto">${item.accuracy.score ? item.accuracy.score:''} % accuracy</p>
+              <img src="${item.image_link[1]}
+              " class="card-img-top" alt="...">
+                  <div class="card-body">
+                  <p class="card-text text-center">${item.input_output_examples[0].input? item.input_output_examples[0].input: 'No Input Data Found'}</p>
+                  <p class="card-text text-center">${item.input_output_examples[0].output? item.input_output_examples[0].output: 'No Output Data Found'}</p>
+                  </div>
+                </div>
+          </div>
+        </div>
+                `
+    }
 
 loadItems(6)
 
@@ -115,161 +168,3 @@ loadItems(6)
 
 
 
-
-// const loaditems = async (searchText, dataLimit) => {
-//     const url = `https://openapi.programming-hero.com/api/items?search=${searchText}`
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     displayitems(data.data, dataLimit);
-// }
-// const displayitems = (items, dataLimit) => {
-//     const itemsContainer = document.getElementById('items-container');
-//     itemsContainer.innerText='';
-//     const seeMore = document.getElementById('show-all');
-//     if (dataLimit && items.length > 10) {
-//         items = items.slice(0, 10);
-//         seeMore.classList.remove('d-none');
-//     }
-//     else{
-//         seeMore.classList.add('d-none');
-//     }
-//
-//     items.forEach(item => {
-//         const itemDiv = document.createElement('div');
-//         itemDiv.classList.add('col');
-//         itemDiv.innerHTML = `
-//         <div class="card p-4">
-//                 <img src="${item.image}" class="card-img-top" alt="...">
-//                 <div class="card-body">
-//                   <h5 class="card-title">${item.item_name}</h5>
-//                   <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-//                   <button onclick="loadItemDetails('${item.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemDetailModal">Show Details</button>
-//                 </div>
-//             </div>
-//         `
-//         itemsContainer.appendChild(itemDiv);
-//     })
-//     toggleSpinner(false)
-// }
-
-// const searchProcess = (dataLimit)=>{
-//     toggleSpinner(true);
-//     const searchField= document.getElementById('search-field');
-//     const searchText =searchField.value;
-//     loaditems(searchText, dataLimit);
-// }
-
-// const toggleSpinner = isLoading => {
-//     const loaderSection = document.getElementById('loader');
-//     if(isLoading){
-//         loaderSection.classList.remove('d-none')
-//     }
-//     else{
-//         loaderSection.classList.add('d-none')
-//     }
-// }
-
-// document.getElementById('btn-show-all').addEventListener('click',function () {
-//     searchProcess();
-// })
-
-// const loaditemDetails = async id =>{
-//     const url =`https://openapi.programming-hero.com/api/item/${id}`;
-//     const res = await fetch(url);
-//     const data = await res.json();
-//     displayitemDetails(data.data)
-// }
-
-// const displayitemDetails = item =>{
-//     console.log(item);
-//     const modalTitle = document.getElementById('itemDetailModalLabel');
-//     modalTitle.innerText = item.name;
-//     const itemDetails = document.getElementById('item-details');
-//     itemDetails.innerHTML=`
-//     <p>Release Date: ${item.releaseDate ? item.releaseDate : 'No Release Date Found'}</p>
-//     <p>Storage: ${item.mainitems.storage ? item.mainitems.storage :'No Storage Information'}</p>
-//     <p>Others: ${item.others? item.others.Bluetooth : 'No Bluetooth Information'}</p>
-//     `
-// }
-
-// loaditems('apple')
-
-
-
-
-// const generateLi= (li) => {
-//     let liHTML = ``;
-//     for(let i = 0; i<features.length; i++){
-//         liHTML += `item.'${features[i]}'`;
-//         return liHTML
-//     }
-// }
-
-
-
-// const loadMeals = (searchText) => {
-//     const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`
-//     console.log(url)
-//     fetch(url)
-//       .then(res => res.json())
-//       .then(data => displayMeals(data.meals))
-//   }
-//   const displayMeals = meals => {
-//     // console.log(meals)
-//     const mealsContainer = document.getElementById('meals-container')
-//     mealsContainer.innerText = '';
-//     meals.forEach(meal => {
-//       console.log(meal)
-//       const mealDiv = document.createElement('div')
-//       mealDiv.classList.add('col')
-//       mealDiv.innerHTML = `
-//           <div class="col">
-//                 <div class="card">
-//               <img src="${meal.strMealThumb}
-//               " class="card-img-top" alt="...">
-//                   <div class="card-body">
-//                     <h5 class="card-title">${meal.strMeal}</h5>
-//                   <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-//                   <button onclick="loadMealDetail(${meal.idMeal})" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealDetails">
-//                       Details
-//                         </button>
-//                   </div>
-//                 </div>
-//           </div>
-//           `
-//       mealsContainer.appendChild(mealDiv)
-//     })
-//   }
-//   const searchMeals = () => {
-//     const searchText = document.getElementById('search-field').value;
-//     console.log(searchText)
-//     loadMeals(searchText)
-//   }
-//   const loadMealDetail = idMeal=>{
-//     const url =`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`;
-//     fetch(url)
-//     .then(res=>res.json())
-//     .then(data=>displayMealDetails(data.meals[0]))
-//     .catch(error=>{console.log(error)})
-//   }
-//   // const loadMealDetail2= async(idMeal){
-//   //   const url =`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`;
-//   //   try{
-//     // const res = await fetch(url);
-//   //   const data = await res.json();
-//   //   displayMealDetails(data.meals[0])
-//   // }
-//   // catch(error){
-//   //   console.log(error)
-//   // }
-//   // }
-  
-//   const displayMealDetails= meal =>{
-//     console.log(meal)
-//     document.getElementById('mealDetailsLabel').innerText= meal.strMeal;
-//     const mealsDetails =document.getElementById('mealDetailBody');
-//     mealsDetails.innerHTML= `
-//     <img class="img-fluid" src="${meal.strMealThumb}">
-//     `
-//   }
-//   loadMeals('fish')
